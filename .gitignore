@@ -4,3 +4,4 @@ data/*.pyc
 Game/*.pyc
 tests/*.pyc
 Game/__pycache__/
+/dist
