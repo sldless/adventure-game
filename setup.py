@@ -1,5 +1,11 @@
 import sys
-from cx_Freeze import setup, Executable
+from os import system, name
+
+try:
+    from cx_Freeze import setup, Executable
+except ModuleNotFoundError:
+    system(f"python{'' if name == 'nt' else '3'} -m pip install cx_freeze")
+    from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need fine tuning.
 # "packages": ["os"] is used as example only

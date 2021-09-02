@@ -1,6 +1,6 @@
 import csv
 
-class Item(object):
+class Item:
     #properties of all items
 
     def setup(self, config):
@@ -55,13 +55,10 @@ class Item(object):
 #'type': a flag that determines properties. Possible values: "carryable", "scenery", "exit", "hidden"
 #'look_special": set to True to trigger room-specific events when the item is examined
 
- 
-    
-    
 def create_item(config):
     new_item = Item()
     new_item.setup(config)
-    return(new_item)
+    return new_item
 
 def populate():
     #runs each of the item creation functions
@@ -77,5 +74,4 @@ def populate():
         new_item = (create_item(row))
         all_items[new_item.label] = new_item
         
-    return(all_items)
-    
+    return all_items

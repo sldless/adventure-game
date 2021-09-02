@@ -1,4 +1,4 @@
-class Mobile(object):
+class Mobile:
     #a class for things that move around (currently just the player)
     #tracks inventory and location (Room object)
     
@@ -66,7 +66,7 @@ class Mobile(object):
         #this seems awkward but was the best way i could come up with to
         #add multiple dicts while leaving the originals intact
         
-        return(self.things_to_look_at)
+        return self.things_to_look_at
         
     def look_special(self, item):  
         #allows triggering of events when an item is looked at
@@ -105,9 +105,9 @@ class Mobile(object):
         
             
     def cut(self):
-        if self.inventory.has('scalpel') == False:
+        if not self.inventory.has('scalpel'):
             print("You don't have anything to cut that with.")
-        elif self.can_cut_key() == False:
+        elif not self.can_cut_key():
             print("Cutting that doesn't seem like it would be a good idea.")
         else:
             print("You use the scalpel to cut the key free of the frozen, swollen fingers. The flesh is stiff and bloodless.")
@@ -116,7 +116,7 @@ class Mobile(object):
     def can_cut_key(self):
         if self.location.label != 'garage':
             return False
-        elif ('key' in list(self.location.items.keys())) == False:
+        elif 'key' not in list(self.location.items.keys()):
             return False
         elif self.location.items['key'].type == 'hidden':
             return False
@@ -124,9 +124,9 @@ class Mobile(object):
             return True
             
     def unlock_core(self):
-        if self.inventory.has('key') == False:
+        if not self.inventory.has('key'):
             print("You don't have anything that fits in the lock.")
-        elif self.location.label != 'reactor' or ("core" in list(self.location.items.keys())) == False:
+        elif self.location.label != 'reactor' or ("core" not in list(self.location.items.keys())):
             print("You don't see anything that key would unlock.")
         else:
             print("You put the key into the lock on top of the cylinder and twist. There's a hiss as the top angles open.")
@@ -135,7 +135,7 @@ class Mobile(object):
             self.location.items['rod'].type = "carryable"
 
     def inject(self):
-        if self.inventory.has('syringe') == False:
+        if not self.inventory.has('syringe'):
             print("You don't have anything to inject.")
         else:
             print("It's clear what you have to do. You grit your teeth and plunge the syringe into your chest. You probably can't really feel the spread of the liquid burning through your arteries, but if feels like you can.")

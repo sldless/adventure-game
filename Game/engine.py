@@ -1,8 +1,8 @@
 from sys import exit
 
-class Engine(object):
-#Parses player commands and manipulates a map object
-    def __init__ (self, map, player):
+class Engine:
+    #Parses player commands and manipulates a map object
+    def __init__(self, map, player):
         #sets up recognized keywords.
         self.map = map
         self.player = player
@@ -16,12 +16,13 @@ class Engine(object):
             "north",
             "east",
             "south",
-            "west"]
-        self.inventory_keywords = dict({
-            "take":"take",
-            "pick":"take",
-            "drop":"drop",
-        })
+            "west"
+        ]
+        self.inventory_keywords = {
+            "take": "take",
+            "pick": "take",
+            "drop": "drop",
+        }
         self.menu_keywords = ["quit", "help", "i", "inv"]
         self.look_keywords = ["look", "search", "read"]
         
@@ -61,8 +62,7 @@ class Engine(object):
     def prompt(self):
         #prints the prompt and returns the input
         print("\nWhat do you want to do?")
-        action = input("> ")
-        return action
+        return input("> ")
    
             
     def menu_commands(self, command):
@@ -71,18 +71,18 @@ class Engine(object):
         if "quit" in self.command:
             print("Are you sure? Press Y to quit, any other key to keep playing.")
             confirmation = input("> ")
-            if confirmation == "Y" or confirmation == "y":
+            if confirmation.lower() == "y":
                 exit(1)
             else:
-                return(False)
-        elif command in ['i', 'inv', 'inventory']:
+                return False
+        elif command in ('i', 'inv', 'inventory'):
             self.player.inventory.list()
-        elif command in ['h', 'help', 'info']:
+        elif command in ('h', 'help', 'info'):
             self.help_list()
-            return(False)
+            return False
         else:
             self.parse_fail()
-            return(False)
+            return False
     
     def parse_fail(self):
         #called if the parser doesn't recognize the command
@@ -146,7 +146,7 @@ class Engine(object):
             if item.use_words != "":
                 for word in item.use_words:
                     self.use_words.append(word)
-        return(self.use_words)
+        return self.use_words
             
             
     def look_parse(self, command):
@@ -209,10 +209,10 @@ class Engine(object):
                 if word in item.keywords:
                     self.exit_to_try = item
                     self.success = True
-        if self.success == True:
-            return(self.exit_to_try)
+        if self.success:
+            return self.exit_to_try
         else:
-            return(self.map.all_exits["not_found"])
+            return self.map.all_exits["not_found"]
             
     def simulate_play(self, command_list):
     #for debugging purposes, takes a list of commands and parses them in order

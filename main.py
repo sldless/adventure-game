@@ -1,21 +1,18 @@
-import Game.inventory
-import Game.mobiles
-import Game.map
-import Game.engine
+from Game import (Inventory, Map, Mobile, Engine)
 
 def setup():
-    inventory = Game.inventory.Inventory()
+    inventory = Inventory()
     #makes an instance of the Inventory class to use as player's inventory
      
-    main_map = Game.map.Map()
+    main_map = Map()
     main_map.setup()
     #makes an instance of the Map class and passes it the item dictionary
 
-    player = Game.mobiles.Mobile(inventory, main_map.all_rooms['tube_room'])
+    player = Mobile(inventory, main_map.all_rooms['tube_room'])
     #makes an instance of the the Mobile class for the player and puts it in the first room
 
 
-    main_engine = Game.engine.Engine(main_map, player)
+    main_engine = Engine(main_map, player)
     #starts the engine with the map instance
 
     main_engine.move_into(player.location.label)
@@ -24,7 +21,7 @@ def setup():
 
 main_engine = setup()
     
-while main_engine.player.victory != True:
+while not main_engine.player.victory:
     action = main_engine.prompt()
     main_engine.parse(action)
     

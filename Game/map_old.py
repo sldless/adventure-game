@@ -12,23 +12,20 @@ class MainPortal(Exit):
         self.inventory = inventory
         if ("keycard" in list(self.inventory.inventory.keys())) and ("parka" in list(self.inventory.inventory.keys())):
             self.is_open = True
-            return("outside")
+            return "outside"
         if ("keycard" in list(self.inventory.inventory.keys())):
             print("""
   The reader beeps as the light turns green, and the door swings open. Outside, a howling wind whips
   across waist-deep drifts of snow. It's hard to see anything through the blizzard. You don't think
   you'd survive long out there without some protection from the cold.
             """)
-            return("central_hallway_east")
+            return "central_hallway_east"
         else:
             print("You think you'll need a keycard to open that door.")
-            return("central_hallway_east")
-    
-        
-        
-        
-        
-class Inventory(object):
+            return "central_hallway_east"
+
+
+class Inventory:
     #manages the player's inventory
     #creates a dictionary using an item's label as the key
     #linked to the Item-class object
@@ -98,7 +95,7 @@ class Kitchen(Room):
             return "Look special failed" #shouldn't happen
         
     
-class Map(object):
+class Map:
     #creates each room as an instance of the Room class
     #assigns item objects and exit objects to each
     #modular design: each room object created by its own function
@@ -125,7 +122,7 @@ def debug_init():
     all_items = item_setup.populator()
     main_map = Map(all_items)
     main_map.setup()
-    return(main_map)
+    return main_map
     
 def mentioned_in(command, items_to_search):
     #to use on both exits and items
@@ -156,10 +153,10 @@ def mentioned_in(command, items_to_search):
             if word in item.keywords:
                 exit_to_try = item
                 success = True
-    if success == True:
-        return(exit_to_try)
+    if success:
+        return exit_to_try
     else:
-        return("not_found")
+        return "not_found"
 
     #concern: will just return the last one
     #if same keyword for multiple items

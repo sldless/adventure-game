@@ -1,4 +1,4 @@
-class Inventory(object):
+class Inventory:
     #manages the player's inventory
     #creates a dictionary using an item's label as the key
     #linked to the Item-class object
@@ -22,10 +22,7 @@ class Inventory(object):
         
     def has(self, label):
         self.label = label
-        if self.label in list(self.inv_list.keys()):
-            return True
-        else:
-            return False
+        return self.label in list(self.inv_list.keys())
             
     def describe(self, item):
         self.item = item

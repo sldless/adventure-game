@@ -2,7 +2,7 @@ from . import items
 from . import exits
 from . import rooms
 
-class Map(object): 
+class Map: 
     def setup(self):
         self.all_items = items.populate()
         self.all_exits = exits.populate()

@@ -9,14 +9,11 @@ class Exit(items.Item):
             'south': 's',
             'east': 'e',
             'west': 'w'
-            }
+        }
         
         self.setup(self.config)
         #sets up the properties that Exits share with Items
-        if config['is_open'] == 'yes':
-            self.is_open = True
-        else:
-            self.is_open = False
+        self.is_open = config['is_open'] == 'yes'
         #necessary because the CSV import is a string, not a boolean
             
         self.direction = config['direction']
@@ -60,11 +57,11 @@ class Exit(items.Item):
         #function with the function from the donor in special_setup
         self.player = player
         
-        if self.is_open == True:
-            return(True)
+        if self.is_open:
+            return True
         else:
             print("The %s is closed.") #shouldn't happen
-            return(False)
+            return False
             
 #to create custom "shall pass" behavior, make a substitute method below
 #then alter the special_setup function to swap the new method for that particular
@@ -74,21 +71,21 @@ class Exit(items.Item):
         self.player = player
         if self.player.inventory.has('keycard') and self.player.inventory.has('parka'):
             self.is_open = True
-            return(True)
+            return True 
         elif self.player.inventory.has('keycard'):
             print("""
     The reader beeps as the light turns green, and the door swings open. Outside, a howling wind whips
     across waist-deep drifts of snow. It's hard to see anything through the blizzard. You don't think
     you'd survive long out there without some protection from the cold.
             """)
-            return(False)
+            return False
         else:
             print("You think you'll need a keycard to open that door.")
-            return(False)
+            return False
             
     def reactor_special(self, player):
         self.player = player
-        if self.player.injected == False:
+        if not self.player.injected:
             print("You really don't think it's a good idea to go in there unprotected.")
             return False
         else:
@@ -98,7 +95,7 @@ class Exit(items.Item):
 def create_exit(config):
     new_exit = Exit()
     new_exit.exit_setup(config)
-    return(new_exit)
+    return new_exit
     
 def reverse_direction(word):
     #if the string is a direction, returns its opposite
@@ -118,7 +115,7 @@ def reverse_direction(word):
     
     if word in reversal_guide:
         word = reversal_guide[word]
-    return(word)
+    return word
     
 def create_config_reverse(config):
     #allows quick set-up of both sides of an exit
@@ -139,14 +136,14 @@ def create_config_reverse(config):
         new_keywords.append(reverse_direction(keyword))
     config['keywords'] = new_keywords
         
-    return(config)
+    return config
     
 def special_setup(all_exits):
     all_exits['main_portal'].shall_pass = all_exits['main_portal'].main_portal_special
     all_exits['main_portal_rev'].shall_pass = all_exits['main_portal'].main_portal_special
     all_exits['reactor_door'].shall_pass = all_exits['reactor_door'].reactor_special
     all_exits['reactor_door_rev'].shall_pass = all_exits['reactor_door'].reactor_special
-    return(all_exits)
+    return all_exits
     
     
 def populate():
@@ -164,4 +161,4 @@ def populate():
         reverse_exit = create_exit(create_config_reverse(config))
         all_exits[reverse_exit.label] = reverse_exit
     all_exits = special_setup(all_exits)
-    return(all_exits)
+    return all_exits

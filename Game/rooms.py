@@ -1,6 +1,6 @@
 import csv
 
-class Room(object):
+class Room:
     #organizes and manipulates rooms
     
     def __init__(self):
@@ -65,7 +65,7 @@ class Room(object):
 def create_room(config):
     new_room = Room()
     new_room.setup(config)
-    return(new_room)
+    return new_room
     
 def populate():
     all_rooms = {}
@@ -75,4 +75,4 @@ def populate():
     for config in reader:
         new_room = create_room(config)
         all_rooms[new_room.label] = new_room
-    return(all_rooms)
+    return all_rooms
