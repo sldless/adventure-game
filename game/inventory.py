@@ -37,19 +37,23 @@ class Inventory:
 
     def list(self):
         """Lists the contents of the inventory."""
-        if self.inv_list == {}:
+        if not self.inv_list:
             print("You are not carrying anything.")
-        else:
-            print("You are carrying:\n")
-        for i, item in self.inv_list.items():
-            print(item.name)
+            return
+
+        print(
+            "You are carrying:\n"
+            + '\n'.join(item.name for item in self.inv_list.values())
+        )
 
     # these should probably never happen because of how add
     # and remove are called as part of mobile.take/drop,
     # which should only be called in pre-screened circumstances
 
-    def remove_error(self, item):
-        print("%s not found in inventory." % self.item.label)
+    @staticmethod
+    def remove_error(item):
+        print("%s not found in inventory." % item.label)
 
-    def add_error(self, item):
-        print("%s already in inventory" % self.item.label)
+    @staticmethod
+    def add_error(item):
+        print("%s already in inventory" % item.label)

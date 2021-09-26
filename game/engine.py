@@ -1,6 +1,31 @@
 from sys import exit
 
 
+HELP_LIST = (
+    "_____________________________________________\n"
+    "|          The Great Escape - Info          |\n"
+    "|                                           |\n"
+    "| pick [item] -> picks up item to inventory |\n"
+    "| north, west, east, south -> directions    |\n"
+    "| go -> get room details and exits          |\n"
+    "| exit -> close game after confirmation     |\n"
+    "| inv, inventory -> display backpack        |\n"
+    "|                                           |\n"
+    "|________________Version 0.1________________|\n"
+)
+
+
+VICTORY_MESSAGE = (
+    "With a touch of the ignition button, the snowmobile roars"
+    " with way more power than it needs. You climb on and steer"
+    "it out into the blinding snow, hoping you will reach civilization"
+    " while you can still be described as civilized."
+    "Congratulations! You are a winner!"
+)
+
+PARSE_FAIL_TEXT = "I'm afraid I don't know what that means."
+
+
 class Engine:
 
     def __init__(self, game_map, player):
@@ -27,7 +52,6 @@ class Engine:
         self.room = None
         self.command = None
         self.item_to_try = None
-        self.action = None
         self.split_command = None
         self.first_word = None
         self.exit_to_try = None
@@ -64,6 +88,7 @@ class Engine:
             sep='\n'
         )
         self.room.describe()
+        return self
 
     @staticmethod
     def prompt():
@@ -93,11 +118,11 @@ class Engine:
             self.player.inventory.list()
 
         elif command in ('h', 'help', 'info'):
-            self.help_list()
+            print(HELP_LIST)
             return False
 
         else:
-            self.parse_fail()
+            print(PARSE_FAIL_TEXT)
             return False
 
     def inventory_parse(self, command):
@@ -133,8 +158,7 @@ class Engine:
         """Breaks commands into categories
             and then calls an appropriate function.
         """
-        self.action = action
-        self.split_command = self.action.split()
+        self.split_command = action.split()
         # splits the input into a list of individual words
         self.first_word = self.split_command[0]
 
@@ -143,7 +167,8 @@ class Engine:
         # then calls the appropriate function
 
         if self.first_word in self.menu_keywords:
-            self.menu_commands(self.action)
+            self.menu_commands(action)
+
         elif self.first_word in self.movement_keywords:
             self.move_parse(self.split_command)
 
@@ -158,7 +183,7 @@ class Engine:
             if self.first_word in self.use_words:
                 self.use_parse(self.split_command)
             else:
-                self.parse_fail()
+                print(PARSE_FAIL_TEXT)
 
     def use_words_lookup(self):
         self.use_words = ['use']
@@ -184,7 +209,7 @@ class Engine:
             if self.looked_at.label != 'not_found':
                 print(self.looked_at.description)
             else:
-                self.look_failed()
+                print("You don't see anything like that here.")
 
             if self.looked_at.look_special == 'yes':
                 self.player.look_special(self.looked_at)
@@ -206,7 +231,7 @@ class Engine:
         self.use_item = self.mentioned_in(self.command, self.player.can_see())
 
         if self.use_item.label == "not_found":
-            self.use_fail()
+            print("You don't see any way to do that.")
         else:
             self.player.use(self.use_item)
 
@@ -246,52 +271,6 @@ class Engine:
             self.parse(command)
 
     @staticmethod
-    def parse_fail():
-        """
-        Called if the parser doesn't recognize
-        the command can be expanded:
-            multiple rejection phrases
-
-        this should be called as little as possible in favor of more
-
-        specific errors in that vein:
-           tracking of commands that get this response so that I can
-           make better responses to common unrecognized phrases
-
-        """
-        print("I'm afraid I don't know what that means.")
-
-    @staticmethod
-    def look_failed():
-        print("You don't see anything like that here.")
-
-    @staticmethod
-    def use_fail():
-        print("You don't see any way to do that.")
-
-    @staticmethod
     def victory():
-        print(
-            "With a touch of the ignition button, the snowmobile roars"
-            " with way more power than it needs. You climb on and steer"
-            "it out into the blinding snow, hoping you will reach civilization"
-            " while you can still be described as civilized."
-        )
-
-        print("Congratulations! You are a winner!")
+        print(VICTORY_MESSAGE)
         exit(1)
-
-    @staticmethod
-    def help_list():
-        print(
-            "_____________________________________________"
-            "|          The Great Escape - Info          |"
-            "|                                           |"
-            "| pick [item] -> picks up item to inventory |"
-            "| north, west, east, south -> directions    |"
-            "| go -> get room details and exits          |"
-            "| exit -> close game after confirmation     |"
-            "| inv, inventory -> display backpack        |"
-            "|                                           |"
-            "|________________Version 0.1________________|"
-        )

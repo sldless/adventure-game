@@ -4,7 +4,7 @@ import csv
 class Item:
     """Properties of all items"""
 
-    def __init__(self):
+    def __init__(self, config):
         self.config = None
         self.label = None
         self.name = None
@@ -15,7 +15,6 @@ class Item:
         self.look_special = None
         self.use_words = None
 
-    def setup(self, config):
         # Takes in a dictionary and assigns item properties according to labels
         self.config = config
         self.label = config['label']
@@ -37,12 +36,6 @@ class Item:
         # change this flag to true to trigger special room-specific
         # events when the item is examined
         self.use_words = config['use_words']
-
-
-def create_item(config):
-    new_item = Item()
-    new_item.setup(config)
-    return new_item
 
 
 def populate():
@@ -95,7 +88,8 @@ def populate():
     for row in reader:
         row['keywords'] = row['keywords'].split()
         row['use_words'] = row['use_words'].split()
-        new_item = (create_item(row))
+        new_item = Item(row)
+
         all_items[new_item.label] = new_item
 
     return all_items

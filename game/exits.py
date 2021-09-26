@@ -4,8 +4,8 @@ import csv
 
 class Exit(items.Item):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, config):
+        super().__init__(config)
         self.player = None
         self.config = None
         self.abbreviations = None
@@ -13,7 +13,6 @@ class Exit(items.Item):
         self.direction = None
         self.destination = None
 
-    def exit_setup(self, config):
         self.config = config
         self.abbreviations = {
             'north': 'n',
@@ -22,7 +21,6 @@ class Exit(items.Item):
             'west': 'w'
         }
 
-        self.setup(self.config)
         # sets up the properties that Exits share with Items
         self.is_open = config['is_open'] == 'yes'
         # necessary because the CSV import is a string, not a boolean
@@ -95,12 +93,6 @@ class Exit(items.Item):
                 " so that's probably your imagination."
             )
             return True
-
-
-def create_exit(config):
-    new_exit = Exit()
-    new_exit.exit_setup(config)
-    return new_exit
 
 
 def reverse_direction(word):
@@ -207,17 +199,17 @@ def populate():
         a string matching the label of the room the exit leads to
     """
     all_exits = {}
-    f = open('data/exits.csv', 'r')
-    reader = csv.DictReader(f)
 
-    for config in reader:
-        config['keywords'] = config['keywords'].split()
-        config['use_words'] = config['use_words'].split()
-        # make entries into lists before passing to creation function
+    with open('data/exits.csv', 'r') as f:
+        for config in csv.DictReader(f):
+            config['keywords'] = config['keywords'].split()
+            config['use_words'] = config['use_words'].split()
+            # make entries into lists before passing to creation function
 
-        new_exit = create_exit(config)
-        all_exits[new_exit.label] = new_exit
-        reverse_exit = create_exit(create_config_reverse(config))
-        all_exits[reverse_exit.label] = reverse_exit
+            new_exit = Exit(config)
+            all_exits[new_exit.label] = new_exit
+            reverse_exit = Exit(create_config_reverse(config))
+            all_exits[reverse_exit.label] = reverse_exit
+
     all_exits = special_setup(all_exits)
     return all_exits

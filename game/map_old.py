@@ -93,12 +93,14 @@ class Inventory:
         """Lists the contents of the inventory,
             responds appropriately if inventory is empty.
         """
-        if self.inventory == {}:
+        if not self.inventory:
             print("You are not carrying anything.")
-        else:
-            print("You are carrying:")
-        for i, item in self.inventory.items():
-            print(item.name)
+            return
+
+        print(
+            "You are carrying:",
+            '\n'.join(item.name for item in self.inventory.values())
+        )
 
 
 class Kitchen(Room):
@@ -118,6 +120,7 @@ class Kitchen(Room):
 
     def look_special(self, item_label):
         self.item_label = item_label
+
         if self.item_label == "corpse":
             self.items['keycard'].type = "carryable"
         else:
@@ -173,19 +176,11 @@ def mentioned_in(command, items_to_search):
     and return only the needed key, and do the lookup later?
     but i need to access the keyword list for each item
     """
-    success = False
-    exit_to_try = None
-
     for i, item in items_to_search.items():
         for word in command:
             if word in item.keywords:
-                exit_to_try = item
-                success = True
-    if success:
-        return exit_to_try
-
-    else:
-        return "not_found"
+                return item
+    return "not_found"
 
     # concern: will just return the last one
     # if same keyword for multiple items

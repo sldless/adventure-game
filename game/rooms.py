@@ -4,7 +4,7 @@ import csv
 class Room:
     """Organizes and manipulates rooms."""
 
-    def __init__(self):
+    def __init__(self, config):
         self.visits = 0
 
         self.config = None
@@ -16,7 +16,6 @@ class Room:
         self.exit_list = None
         self.exits = None
 
-    def setup(self, config):
         self.config = config
 
         self.label = config['label']
@@ -61,6 +60,7 @@ class Room:
         """
         self.item_list = item_list
         self.items = {}
+
         for key, item in self.item_list.items():
             if item.location == self.label:
                 self.items[item.label] = item
@@ -68,23 +68,18 @@ class Room:
     def add_exits(self, exit_list):
         self.exit_list = exit_list
         self.exits = {}
+
         for key, _exit in self.exit_list.items():
             if _exit.location == self.label:
                 self.exits[_exit.label] = _exit
 
 
-def create_room(config):
-    new_room = Room()
-    new_room.setup(config)
-    return new_room
-
-
 def populate():
     all_rooms = {}
-    f = open("data/rooms.csv", "r")
-    reader = csv.DictReader(f)
 
-    for config in reader:
-        new_room = create_room(config)
-        all_rooms[new_room.label] = new_room
+    with open("data/rooms.csv", "r") as f:
+        for config in csv.DictReader(f):
+            new_room = Room(config)
+            all_rooms[new_room.label] = new_room
+
     return all_rooms
