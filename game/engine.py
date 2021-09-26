@@ -2,34 +2,31 @@ from sys import exit
 
 
 class Engine:
-    # Parses player commands and manipulates a map object
-    def __init__(self, map, player):
+
+    def __init__(self, game_map, player):
+        """Parses player commands and manipulates a map object."""
+
         # sets up recognized keywords.
-        self.map = map
+        self.map = game_map
         self.player = player
 
         self.movement_keywords = [
-            "go",
-            "n",
-            "e",
-            "s",
-            "w",
-            "north",
-            "east",
-            "south",
-            "west"
+            "go", "n", "e", "s", "w",  "north", "east", "south", "west"
         ]
+
         self.inventory_keywords = {
             "take": "take",
             "pick": "take",
             "drop": "drop",
         }
+
         self.menu_keywords = ["quit", "help", "i", "inv"]
         self.look_keywords = ["look", "search", "read"]
 
     def move_into(self, room_name):
-        # looks up the room with the right label
-        # makes the player's location be that room and prints the description
+        """Looks up the room with the right label and makes the player's
+             location be that room and prints the description.
+        """
         self.room_name = room_name
         self.room = self.map.all_rooms[self.room_name]
         self.player.location = self.room
@@ -61,18 +58,23 @@ class Engine:
         self.room.describe()
 
     def prompt(self):
-        # prints the prompt and returns the input
+        """Prints the prompt and returns the input."""
         print("\nWhat do you want to do?")
         return input("> ")
 
     def menu_commands(self, command):
-        # handles straightforward,
-        # always-available commands like "quit" and "inv"
+        """handles straightforward,
+        always-available commands like `quit` and `inv`.
+        """
         self.command = command
         if "quit" in self.command:
             print(
-                "Are you sure? Press Y to quit, any other key to keep playing.")
+                "Are you sure? "
+                "Press Y to quit, any other key to keep playing."
+            )
+
             confirmation = input("> ")
+
             if confirmation.lower() == "y":
                 exit(1)
             else:
@@ -90,18 +92,24 @@ class Engine:
             return False
 
     def parse_fail(self):
-        # called if the parser doesn't recognize the command
-        # can be expanded: multiple rejection phrases
+        """
+        Called if the parser doesn't recognize
+        the command can be expanded:
+            multiple rejection phrases
 
-        # this should be called as little as possible in favor of more
-        # specific errors in that vein:
-        #   tracking of commands that get this response so that I can
-        #   make better responses to common unrecognized phrases
+        this should be called as little as possible in favor of more
+
+        specific errors in that vein:
+           tracking of commands that get this response so that I can
+           make better responses to common unrecognized phrases
+
+        """
         print("I'm afraid I don't know what that means.")
 
     def inventory_parse(self, command):
-        # decides whether the command is to take,
-        # drop, or use an item and calls the appropriate mobile function.
+        """Decides whether the command is to take, drop
+            or use an item and calls the appropriate mobile function.
+        """
         self.command = command
 
         if self.inventory_keywords[self.command[0]] == "take":
@@ -121,13 +129,16 @@ class Engine:
             print("Inventory parsing error")  # should never happen
 
     def look_fail(self, command):
-        # called when a look command doesn't refer to anything
-        # could be made more interesting by referring to the command
+        """Called when a look command doesn't refer to anything
+            could be made more interesting by referring to the command.
+        """
         self.command = command
         print("You don't see anything like that.")
 
     def parse(self, action):
-        # breaks commands into categories and then calls an appropriate function
+        """Breaks commands into categories
+            and then calls an appropriate function.
+        """
 
         self.action = action
         self.split_command = self.action.split()
@@ -197,8 +208,9 @@ class Engine:
         print("You don't see anything like that here.")
 
     def use_parse(self, command):
-        # this is triggered if the command starts
-        # with a possible use word
+        """This is triggered if the command starts
+            with a possible use word.
+        """
         self.command = command
         self.use_item = self.mentioned_in(self.command, self.player.can_see())
 
@@ -211,13 +223,15 @@ class Engine:
         print("You don't see any way to do that.")
 
     def mentioned_in(self, command, items_to_search):
-        # to use on both exits and items
-        # takes a command (from the user, split into words)
-        # and a dictionary of either exits or items
-        # checks to see if the command contains any of the keywords
-        # attached to the items in the dictionary
-        # if successful, returns the mentioned item
-        # if not, returns the dummy item "not_found"
+        """
+        to use on both exits and items
+        takes a command (from the user, split into words)
+        and a dictionary of either exits or items
+        checks to see if the command contains any of the keywords
+        attached to the items in the dictionary
+        if successful, returns the mentioned item
+        if not, returns the dummy item "not_found"
+        """
 
         self.command = command
         self.items_to_search = items_to_search
@@ -235,8 +249,9 @@ class Engine:
             return self.map.all_exits["not_found"]
 
     def simulate_play(self, command_list):
-        # for debugging purposes,
-        # takes a list of commands and parses them in order
+        """For debugging purposes,
+            takes a list of commands and parses them in order.
+        """
 
         self.command_list = command_list
         for command in self.command_list:

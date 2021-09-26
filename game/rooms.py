@@ -2,7 +2,7 @@ import csv
 
 
 class Room:
-    # organizes and manipulates rooms
+    """Organizes and manipulates rooms."""
 
     def __init__(self):
         self.visits = 0
@@ -24,21 +24,22 @@ class Room:
             print("There is a %s to the %s." % (exit.name, exit.direction))
 
     def describe_verbose(self):
-        # prints the verbose room description
+        """Prints the verbose room description."""
         print("\n%s" % self.verbose_description)
         self.extra_description()
 
     def describe_terse(self):
-        # prints the terse room description
+        """prints the terse room description."""
         print("\n%s" % self.terse_description)
         self.extra_description()
 
     def describe(self):
-        # the main description printing function:
-        # checks to see if the player has been here before
-        # prints the verbose description on the first visits
-        # and the terse description on all others. Always prints
-        # descriptions of items and exits.
+        """The main description printing function:
+            - checks to see if the player has been here before
+            - prints the verbose description on the first visits
+            and the terse description on all others.
+            Always prints descriptions of items and exits.
+        """
         if self.visits == 0:
             self.describe_verbose()
             self.visits += 1
@@ -46,8 +47,9 @@ class Room:
             self.describe_terse()
 
     def add_items(self, item_list):
-        # iterates through the item dictionary and makes a new dictionary
-        # of items whose location matches the room
+        """Iterates through the item dictionary and makes a new dictionary
+            of items whose location matches the room.
+        """
         self.item_list = item_list
         self.items = {}
         for key, item in self.item_list.items():

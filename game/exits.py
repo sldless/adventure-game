@@ -3,6 +3,7 @@ import csv
 
 
 class Exit(items.Item):
+
     def exit_setup(self, config):
         self.config = config
         self.abbreviations = {
@@ -24,40 +25,14 @@ class Exit(items.Item):
         self.keywords.append(self.abbreviations[self.direction])
         # sets up the exit-specific properties
 
-    # Sets up exit objects by creating a config dictionary for each one
-    #
-    # Sample config dictionary (can be copied for each new item):
-    # config = {
-    #   'label':'LABEL',
-    #   'name':'NAME',
-    #   'description':'DESCRIPTION',
-    #   'location':'LOCATION',
-    #   'keywords':['KEYWORD1'],
-    #   'type':'exit',
-    #   'look_special': False,
-    #   'is_open':True,
-    #   'direction':'DIRECTION',
-    #   'destination':'destination'
-    # }
-
-    # 'label' : a single word string used as an internal id
-    # 'name': the user-facing name of the item
-    # 'description': the full verbose description
-    # 'location': the label of the starting room
-    # 'keywords': a list of keywords that the player might refer to the item as
-    # 'type': a flag that determines properties. All exits are type 'exit'.
-    # 'look_special":
-    #   set to True to trigger room-specific events when the item is examined
-    # 'is_open': True allows free passage, False is closed
-    # 'direction': The direction of the exit (cardinals or up/down)
-    # 'destination': a string matching the label of the room the exit leads to
-
     def shall_pass(self, player):
-        # by default, checks the "is_open" flag and acts accordingly to make
-        # more complex behavior, this method can be swapped out during setup
-        # add the method to the SpecialFunctionDonor class,
-        # then overwrite the default function with the function
-        # from the donor in special_setup
+        """By default, checks the "is_open" flag and acts accordingly to make
+            more complex behavior, this method can be swapped out during setup.
+
+        Add the method to the SpecialFunctionDonor class,
+        then overwrite the default function with the function
+        from the donor in special_setup.
+        """
         self.player = player
 
         if self.is_open:
@@ -141,8 +116,9 @@ def reverse_direction(word):
 
 
 def create_config_reverse(config):
-    # allows quick set-up of both sides of an exit
-    # swaps location and destination and reverses direction
+    """Allows quick set-up of both sides of an exit swaps location
+        and destination and reverses direction.
+    """
 
     config['label'] = config['label'] + "_rev"
 
@@ -153,9 +129,7 @@ def create_config_reverse(config):
     config['location'] = old_destination
     config['destination'] = old_location
 
-    new_keywords = []
-    for keyword in old_keywords:
-        new_keywords.append(reverse_direction(keyword))
+    new_keywords = [reverse_direction(keyword) for keyword in old_keywords]
     config['keywords'] = new_keywords
 
     return config
@@ -174,6 +148,55 @@ def special_setup(all_exits):
 
 
 def populate():
+    """
+    Sets up exit objects by creating a config dictionary.
+
+    Sample config dictionary (can be copied for each new item):
+
+    .. code-block:: python
+        >>> config = {
+        ...   'label':'LABEL',
+        ...   'name':'NAME',
+        ...   'description':'DESCRIPTION',
+        ...   'location':'LOCATION',
+        ...   'keywords':['KEYWORD1'],
+        ...   'type':'exit',
+        ...   'look_special': False,
+        ...   'is_open':True,
+        ...   'direction':'DIRECTION',
+        ...   'destination':'destination'
+        ... }
+
+    'label':
+        a single word string used as an internal id
+
+    'name':
+        the user-facing name of the item
+
+    'description':
+        the full verbose description
+
+    'location':
+        the label of the starting room
+
+    'keywords':
+        a list of keywords that the player might refer to the item as
+
+    'type':
+        a flag that determines properties. All exits are type 'exit'.
+
+    'look_special":
+        set to True to trigger room-specific events when the item is examined
+
+    'is_open':
+        True allows free passage, False is closed
+
+    'direction':
+        The direction of the exit (cardinals or up/down)
+
+    'destination':
+        a string matching the label of the room the exit leads to
+    """
     all_exits = {}
     f = open('data/exits.csv', 'r')
     reader = csv.DictReader(f)

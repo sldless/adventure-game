@@ -2,7 +2,7 @@ import csv
 
 
 class Item:
-    # properties of all items
+    """Properties of all items"""
 
     def setup(self, config):
         # Takes in a dictionary and assigns item properties according to labels
@@ -30,34 +30,11 @@ class Item:
         # possible values: "carryable", "exit", "scenery", "hidden"
 
         self.look_special = config['look_special']
-        # change this flag to true to trigger special room-specific events when the item
-        # is examined
+        # change this flag to true to trigger special room-specific
+        # events when the item is examined
 
         self.use_words = config['use_words']
 
-
-# Sets up item objects by creating a config dictionary for each one
-# 
-# Sample config dictionary (can be copied for each new item):
-# config = {
-#   'label':'LABEL',
-#   'name':'NAME',
-#   'description':'DESCRIPTION',
-#   'location':'LOCATION',
-#   'keywords':['KEYWORD1'],
-#   'type':'TYPE'
-#   'look_special': False
-# }
-
-# 'label' : a single word string used as an internal id
-# 'name': the user-facing name of the item
-# 'description': the full verbose description
-# 'location': the label of the starting room
-# 'keywords': a list of keywords that the player might refer to the item as
-# 'type': a flag that determines properties.
-#     Possible values: "carryable", "scenery", "exit", "hidden"
-# 'look_special":
-#     set to True to trigger room-specific events when the item is examined
 
 def create_item(config):
     new_item = Item()
@@ -66,6 +43,45 @@ def create_item(config):
 
 
 def populate():
+    """
+    Sets up item objects by creating a config dictionary for each one
+
+    Sample config dictionary (can be copied for each new item):
+
+    .. code-block:: python
+
+        >>> config = {
+        ...  'label':'LABEL',
+        ...  'name':'NAME',
+        ...  'description':'DESCRIPTION',
+        ...  'location':'LOCATION',
+        ...  'keywords':['KEYWORD1'],
+        ...  'type':'TYPE'
+        ...  'look_special': False
+        ... }
+
+    'label' :
+        a single word string used as an internal id
+
+    'name':
+        the user-facing name of the item
+
+    'description':
+        the full verbose description
+
+    'location':
+        the label of the starting room
+    'keywords':
+        a list of keywords that the player might refer to the item as
+
+    'type':
+        a flag that determines properties.
+        Possible values: "carryable", "scenery", "exit", "hidden"
+
+    'look_special":
+        set to True to trigger room-specific events when the item is examined
+    """
+
     # runs each of the item creation functions
     # and returns a dictionary of all the items
     all_items = {}

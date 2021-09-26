@@ -1,7 +1,9 @@
 class Inventory:
-    # manages the player's inventory
-    # creates a dictionary using an item's label as the key
-    # linked to the Item-class object
+    """Manages the player's inventory
+
+    creates a dictionary using an item's label as the key
+    linked to the Item-class object
+    """
 
     def __init__(self):
         self.inv_list = {}
@@ -32,7 +34,7 @@ class Inventory:
             print("You are not carrying a %s.\n" % self.item.name)
 
     def list(self):
-        # lists the contents of the inventory
+        """Lists the contents of the inventory."""
         if self.inv_list == {}:
             print("You are not carrying anything.")
         else:

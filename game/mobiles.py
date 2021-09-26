@@ -1,6 +1,6 @@
 class Mobile:
-    # a class for things that move around (currently just the player)
-    # tracks inventory and location (Room object)
+    """A class for things that move around (currently just the player)
+        tracks inventory and location (Room object)."""
 
     def __init__(self, inventory, location):
         self.inventory = inventory
@@ -13,9 +13,10 @@ class Mobile:
         self.victory = False
 
     def move(self, exit):
-        # called if the command starts with a movement keyword
-        # compares the content of the command to the keywords for
-        # each exit in the room
+        """Called if the command starts with a movement keyword compares
+            the content of the command to the keywords for each exit
+            in the room.
+        """
 
         self.exit = exit
         # check to see if the exit is valid/open
@@ -29,7 +30,9 @@ class Mobile:
             print("You can't go that way.")
 
     def take(self, item):
-        # called if the player is trying to pick something in the room up
+        """Called if the player is trying to pick something
+            in the room up.
+        """
 
         self.item = item
 
@@ -43,8 +46,9 @@ class Mobile:
             del self.location.items[self.item.label]
 
     def drop(self, item):
-        # called if the player is trying to drop something
-        # reverse of  inventory_take.
+        """Called if the player is trying to drop something
+            reverse of  inventory_take.
+        """
 
         self.item = item
         if self.item.label == 'not_found':
@@ -54,8 +58,10 @@ class Mobile:
             self.location.items[self.item.label] = self.item
 
     def can_see(self):
-        # defines the items the mobile can see, for use with the "look" command
-        # adds together the items and exits in the room along with inventory items
+        """Defines the items the mobile can see,
+            for use with the "look" command adds together the items
+            and exits in the room along with inventory items.
+        """
 
         self.things_to_look_at = dict(list(self.location.items.items()))
         self.things_to_look_at.update(self.location.exits)
@@ -69,9 +75,10 @@ class Mobile:
         return self.things_to_look_at
 
     def look_special(self, item):
-        # allows triggering of events when an item is looked at
-        # to add an event to an item, set the item's look_special to True
-        # then add the event as an elif branch here
+        """Allows triggering of events when an item is looked at to add
+            an event to an item, set the item's look_special to True
+            then add the event as an elif branch here.
+        """
         self.item = item
 
         if self.item.label == 'corpse':
@@ -84,9 +91,13 @@ class Mobile:
             print("Look special failed.")  # shouldn't happen
 
     def use(self, item):
-        # called if the parser thinks the player is trying to use an item.
-        # calls the appropriate event function for whatever item they're trying to use
-        # better way? put flag in the Item object itself?
+        """Called if the parser thinks the player is trying to use an item.
+
+        calls the appropriate event function
+        for whatever item they're trying to use better way?
+
+        put flag in the Item object itself?
+        """
         self.item = item
 
         if self.item.label == 'scalpel' or (self.location.label == 'garage' and self.item.label == 'key'):

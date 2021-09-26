@@ -5,8 +5,9 @@ from .rooms import Room
 
 
 class MainPortal(Exit):
-    # seems like the best way to implement complicated exit behavior is
+    # Seems like the best way to implement complicated exit behavior is
     # by tacking on a function as part of a subclass.
+
     # Then i can check for the existence of the move_special attribute,
     # then run it.
 
@@ -34,17 +35,19 @@ class MainPortal(Exit):
 
 
 class Inventory:
-    # manages the player's inventory
-    # creates a dictionary using an item's label as the key
-    # linked to the Item-class object
+    """Manages the player's inventory.
+
+    creates a dictionary using an item's label as the key
+    linked to the Item-class object
+    """
 
     def __init__(self):
         self.inventory = {}
         # this is the inventory dictionary
 
     def pick_up(self, item, room_items):
-        # adds an item to the inventory dictionary
-        # and removes it from the room's item list dictionary
+        """adds an item to the inventory dictionary
+            and removes it from the room's item list dictionary."""
         self.item = item
         self.room_items = room_items
 
@@ -53,8 +56,9 @@ class Inventory:
         del self.room_items[self.item.label]
 
     def drop(self, item, room_items):
-        # removes an item from the inventory dictionary
-        # and adds it to the room's item list dicitonary
+        """Removes an item from the inventory dictionary
+            and adds it to the room's item list dictionary.
+        """
         self.item = item
         self.room_items = room_items
 
@@ -64,7 +68,7 @@ class Inventory:
         del self.inventory[self.item.label]
 
     def look(self, command):
-        # allows use of the look command on carried items
+        """Allows use of the look command on carried items."""
         self.command = command
         self.item_to_describe = mentioned_in(self.command, self.inventory)
 
@@ -75,8 +79,9 @@ class Inventory:
         return True
 
     def list(self):
-        # lists the contents of the inventory,
-        # responds appropriately if inventory is empty
+        """Lists the contents of the inventory,
+            responds appropriately if inventory is empty.
+        """
         if self.inventory == {}:
             print("You are not carrying anything.")
         else:
@@ -86,13 +91,15 @@ class Inventory:
 
 
 class Kitchen(Room):
-    # for now, special interactions with a non-movable item
-    # are part of the subclass
+    """
+    For now, special interactions with a non-movable item
+        are part of the subclass
 
-    # created for each room
-    # in the kitchen, the body needs to be searched to find the keycard
-    # which, in program terms, means adding the keycard item to the room's
-    # dictionary of items after the action command to search the body is given.
+    created for each room
+    in the kitchen, the body needs to be searched to find the keycard
+    which, in program terms, means adding the keycard item to the room's
+    dictionary of items after the action command to search the body is given.
+    """
 
     def look_special(self, item_label):
         self.item_label = item_label
@@ -103,11 +110,13 @@ class Kitchen(Room):
 
 
 class Map:
-    # creates each room as an instance of the Room class
-    # assigns item objects and exit objects to each
-    # modular design: each room object created by its own function
-    # then setup function runs each room creation function,
-    # which creates each room object as an attribute of the map object
+    """Creates each room as an instance of the Room class.
+
+    assigns item objects and exit objects to each modular design:
+        each room object created by its own function
+        then setup function runs each room creation function,
+        which creates each room object as an attribute of the map object
+    """
     def __init__(self, all_items, player):
         self.all_items = all_items
         self.player = player
@@ -122,10 +131,11 @@ class Map:
 
 
 def debug_init():
-    # needed to automate this setup to poke around at
-    # internal variables from the interpreter
-    # without starting the engine
-    # just saves me some typing
+    """
+    Needed to automate this setup to poke around at internal variables
+    from the interpreter without starting the engine just saves me
+    some typing.
+    """
     item_setup = ItemsInitializer()
     all_items = item_setup.populator()
     main_map = Map(all_items)
@@ -134,30 +144,31 @@ def debug_init():
 
 
 def mentioned_in(command, items_to_search):
-    # to use on both exits and items
-    # takes a command (from the user, split into workds) and a dictionary of
-    # either exits or items
-    # checks to see if the command contains any of the keywords
-    # attached to the items in the dictionary
-    # if successful, returns the mentioned item
-    # if not, returns the string "not_found" (is this a good way to do it?)
+    """
+    To use on both exits and items takes a command
+    (from the user, split into words) and a dictionary of either exits
+    or items checks to see if the command contains any of the keywords
+    attached to the items in the dictionary
+        - if successful, returns the mentioned item
+        - if not, returns the string "not_found"
+        (is this a good way to do it?)
 
-    # other ideas: create a null item and return that, so that
-    # it always returns the same type
+    other ideas:
+        create a null item and return that, so that
 
-    # other thought:
-    # this kind of seems like it conceptually belongs in the parser
+    it always returns the same type
 
-    # or as part of the UserCommand class
-    # but it needs to happen to room-specific lists of items
+    other thought:
+        this kind of seems like it conceptually belongs in the parser
+        or as part of the UserCommand class
+        but it needs to happen to room-specific lists of items
 
-    # wow, lots of comments
-
-    # this is rapidly becoming the heart of the program, and i worry that i'm
-    # not doing it efficiently. maybe pass only the keys to the item dictionary
-    # and return only the needed key, and do the lookup later?
-    # but i need to access the keyword list for each item
-
+    this is rapidly becoming the heart of the program,
+    and i worry that i'm not doing it efficiently.
+    maybe pass only the keys to the item dictionary
+    and return only the needed key, and do the lookup later?
+    but i need to access the keyword list for each item
+    """
     success = False
     for i, item in items_to_search.items():
         for word in command:
