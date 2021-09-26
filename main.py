@@ -1,4 +1,4 @@
-from Game import Inventory, Map, Mobile, Engine
+from game import Inventory, Map, Mobile, Engine
 
 
 def setup():
