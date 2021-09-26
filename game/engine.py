@@ -30,31 +30,24 @@ class Engine:
         self.room_name = room_name
         self.room = self.map.all_rooms[self.room_name]
         self.player.location = self.room
-        print("""
 
-
-
-
-
-
-
-
-
-          _______ _             _____                _   
-         |__   __| |           / ____|              | |  
-            | |  | |__   ___  | |  __ _ __ ___  __ _| |_ 
-            | |  | '_ \ / _ \ | | |_ | '__/ _ \/ _` | __|
-            | |  | | | |  __/ | |__| | | |  __/ (_| | |_ 
-            |_|  |_|_|_|\___|  \_____|_|  \___|\__,_|\__|
-                |  ____|                                
-                | |__   ___  ___ __ _ _ __   ___        
-                |  __| / __|/ __/ _` | '_ \ / _ \       
-                | |____\__ \ (_| (_| | |_) |  __/       
-                |______|___/\___\__,_| .__/ \___| v0.1     
-                                     | |                
-                                     |_|   
-                                                by Loom4k             
-        """)
+        print(
+            r" _______ _             _____                _   ",
+            r"|__   __| |           / ____|              | |  ",
+            r"   | |  | |__   ___  | |  __ _ __ ___  __ _| |_",
+            r"   | |  | '_ \ / _ \ | | |_ | '__/ _ \/ _` | __|",
+            r"   | |  | | | |  __/ | |__| | | |  __/ (_| | |_",
+            r"   |_|  |_|_|_|\___|  \_____|_|  \___|\__,_|\__|",
+            r"|  ____|",
+            r"| |__   ___  ___ __ _ _ __   ___ ",
+            r"|  __| / __|/ __/ _` | '_ \ / _ \ ",
+            r"| |____\__ \ (_| (_| | |_) |  __/",
+            r"|______|___/\___\__,_| .__/ \___| v0.1",
+            r"                     | |",
+            r"                     |_|",
+            r"                        by Loom4k",
+            sep='\n'
+        )
         self.room.describe()
 
     def prompt(self):
@@ -91,21 +84,6 @@ class Engine:
             self.parse_fail()
             return False
 
-    def parse_fail(self):
-        """
-        Called if the parser doesn't recognize
-        the command can be expanded:
-            multiple rejection phrases
-
-        this should be called as little as possible in favor of more
-
-        specific errors in that vein:
-           tracking of commands that get this response so that I can
-           make better responses to common unrecognized phrases
-
-        """
-        print("I'm afraid I don't know what that means.")
-
     def inventory_parse(self, command):
         """Decides whether the command is to take, drop
             or use an item and calls the appropriate mobile function.
@@ -139,7 +117,6 @@ class Engine:
         """Breaks commands into categories
             and then calls an appropriate function.
         """
-
         self.action = action
         self.split_command = self.action.split()
         # splits the input into a list of individual words
@@ -204,9 +181,6 @@ class Engine:
         self.player.move(self.exit_to_try)
         self.move_into(self.player.new_location)
 
-    def look_fail(self):
-        print("You don't see anything like that here.")
-
     def use_parse(self, command):
         """This is triggered if the command starts
             with a possible use word.
@@ -218,9 +192,6 @@ class Engine:
             self.use_fail()
         else:
             self.player.use(self.use_item)
-
-    def use_fail(self):
-        print("You don't see any way to do that.")
 
     def mentioned_in(self, command, items_to_search):
         """
@@ -257,7 +228,32 @@ class Engine:
         for command in self.command_list:
             self.parse(command)
 
-    def victory(self):
+    @staticmethod
+    def parse_fail():
+        """
+        Called if the parser doesn't recognize
+        the command can be expanded:
+            multiple rejection phrases
+
+        this should be called as little as possible in favor of more
+
+        specific errors in that vein:
+           tracking of commands that get this response so that I can
+           make better responses to common unrecognized phrases
+
+        """
+        print("I'm afraid I don't know what that means.")
+
+    @staticmethod
+    def look_fail():
+        print("You don't see anything like that here.")
+
+    @staticmethod
+    def use_fail():
+        print("You don't see any way to do that.")
+
+    @staticmethod
+    def victory():
         print(
             "With a touch of the ignition button, the snowmobile roars"
             " with way more power than it needs. You climb on and steer"
@@ -268,7 +264,8 @@ class Engine:
         print("Congratulations! You are a winner!")
         exit(1)
 
-    def help_list(self):
+    @staticmethod
+    def help_list():
         print(
             "_____________________________________________"
             "|          The Great Escape - Info          |"
@@ -277,7 +274,7 @@ class Engine:
             "| north, west, east, south -> directions    |"
             "| go -> get room details and exits          |"
             "| exit -> close game after confirmation     |"
-            "| inv, inventory -> displaye backpack       |"
+            "| inv, inventory -> display backpack        |"
             "|                                           |"
             "|________________Version 0.1________________|"
         )
