@@ -99,7 +99,7 @@ class Mobile:
                 self.location.label == 'reactor' and self.item.label == 'key'):
             self.unlock_core()
 
-        elif self.item.label == 'core' or self.item.label == 'snowmobile':
+        elif self.item.label == 'snowmobile':
             self.fix()
         else:
             self.use_fail()

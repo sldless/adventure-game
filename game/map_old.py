@@ -1,14 +1,13 @@
-from . import items
 from . import exits
-from . import inventory
-from . import mobiles
-from . import rooms
+from . import items
+from .exits import Exit
+from .rooms import Room
 
 
 class MainPortal(Exit):
     # seems like the best way to implement complicated exit behavior is
     # by tacking on a function as part of a subclass.
-    # Then i can check for the exitence of the move_special attribute,
+    # Then i can check for the existence of the move_special attribute,
     # then run it.
 
     def move_special(self, inventory):
@@ -28,11 +27,10 @@ class MainPortal(Exit):
                 " blizzard. You don't think you'd survive long out there"
                 " without some protection from the cold."
             )
-            return "central_hallway_east"
-
         else:
             print("You think you'll need a keycard to open that door.")
-            return "central_hallway_east"
+
+        return "central_hallway_east"
 
 
 class Inventory:
@@ -73,16 +71,8 @@ class Inventory:
         if self.item_to_describe == "not_found":
             return False
 
-        elif self.item_to_describe.look_special == True:
-            print(self.item_to_describe.description)
-            return True
-
-            self.look_special(self.item_to_describe.label)
-            # not necessary to pass the item label currently b/c there's only
-            # one special event per room, but that could change.
-        else:
-            print(self.item_to_describe.description)
-            return True
+        print(self.item_to_describe.description)
+        return True
 
     def list(self):
         # lists the contents of the inventory,

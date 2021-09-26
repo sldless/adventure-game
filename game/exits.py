@@ -62,9 +62,9 @@ class Exit(items.Item):
 
         if self.is_open:
             return True
-        else:
-            print("The %s is closed.")  # shouldn't happen
-            return False
+
+        print("The %s is closed.")  # shouldn't happen
+        return False
 
     # to create custom "shall pass" behavior, make a substitute method below
     # then alter the special_setup function to swap the new method for that

@@ -77,11 +77,14 @@ class Engine:
                 exit(1)
             else:
                 return False
+
         elif command in ('i', 'inv', 'inventory'):
             self.player.inventory.list()
+
         elif command in ('h', 'help', 'info'):
             self.help_list()
             return False
+
         else:
             self.parse_fail()
             return False
