@@ -1,4 +1,4 @@
-from nose.tools import *
+from nose.tools import assert_equal
 import game.items
 import game.exits
 import game.inventory
@@ -11,7 +11,6 @@ import game.engine
 def setup():
     test_inv = game.inventory.Inventory()
     test_map = game.map.Map()
-    test_map.setup()
     test_player = game.mobiles.Mobile(test_inv, test_map.all_rooms['tube_room'])
     return game.engine.Engine(test_map, test_player)
 
