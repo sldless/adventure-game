@@ -1,23 +1,23 @@
 from nose.tools import *
-import Game.items
-import Game.exits
-import Game.inventory
-import Game.mobiles
-import Game.rooms
-import Game.map
-import Game.engine
+import game.items
+import game.exits
+import game.inventory
+import game.mobiles
+import game.rooms
+import game.map
+import game.engine
 
 
 def setup():
-    test_inv = Game.inventory.Inventory()
-    test_map = Game.map.Map()
+    test_inv = game.inventory.Inventory()
+    test_map = game.map.Map()
     test_map.setup()
-    test_player = Game.mobiles.Mobile(test_inv, test_map.all_rooms['tube_room'])
-    return Game.engine.Engine(test_map, test_player)
+    test_player = game.mobiles.Mobile(test_inv, test_map.all_rooms['tube_room'])
+    return game.engine.Engine(test_map, test_player)
 
 
 def test_item_setup():
-    all_items = Game.items.populate()
+    all_items = game.items.populate()
 
     assert_equal(all_items['keycard'].name, 'keycard')
     assert_equal(all_items['corpse'].location, 'kitchen')
@@ -38,8 +38,8 @@ def test_exit_setup():
 
 
 def test_inventory_setup():
-    all_items = Game.items.populate()
-    test_inv = Game.inventory.Inventory()
+    all_items = game.items.populate()
+    test_inv = game.inventory.Inventory()
     test_item = all_items['scalpel']
 
     test_inv.add(test_item)
@@ -53,7 +53,7 @@ def test_inventory_setup():
 
 
 def test_room_setup():
-    all_rooms = Game.rooms.populate()
+    all_rooms = game.rooms.populate()
 
     assert_equal(
         all_rooms['tube_room'].terse_description,
