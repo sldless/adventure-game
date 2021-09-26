@@ -23,6 +23,21 @@ class Engine:
         self.menu_keywords = ["quit", "help", "i", "inv"]
         self.look_keywords = ["look", "search", "read"]
 
+        self.room_name = None
+        self.room = None
+        self.command = None
+        self.item_to_try = None
+        self.action = None
+        self.split_command = None
+        self.first_word = None
+        self.exit_to_try = None
+        self.use_words = None
+        self.looked_at = None
+        self.use_item = None
+        self.items_to_search = None
+        self.command_list = None
+        self.success = None
+
     def move_into(self, room_name):
         """Looks up the room with the right label and makes the player's
              location be that room and prints the description.
@@ -50,7 +65,8 @@ class Engine:
         )
         self.room.describe()
 
-    def prompt(self):
+    @staticmethod
+    def prompt():
         """Prints the prompt and returns the input."""
         print("\nWhat do you want to do?")
         return input("> ")
@@ -129,7 +145,8 @@ class Engine:
         if self.first_word in self.menu_keywords:
             self.menu_commands(self.action)
         elif self.first_word in self.movement_keywords:
-            self.exit_to_try = self.move_parse(self.split_command)
+            self.move_parse(self.split_command)
+
         elif self.first_word in self.inventory_keywords:
             self.inventory_parse(self.split_command)
         elif self.first_word in self.look_keywords:
@@ -167,7 +184,7 @@ class Engine:
             if self.looked_at.label != 'not_found':
                 print(self.looked_at.description)
             else:
-                self.look_fail()
+                self.look_failed()
 
             if self.looked_at.look_special == 'yes':
                 self.player.look_special(self.looked_at)
@@ -245,7 +262,7 @@ class Engine:
         print("I'm afraid I don't know what that means.")
 
     @staticmethod
-    def look_fail():
+    def look_failed():
         print("You don't see anything like that here.")
 
     @staticmethod

@@ -4,35 +4,38 @@ import csv
 class Item:
     """Properties of all items"""
 
+    def __init__(self):
+        self.config = None
+        self.label = None
+        self.name = None
+        self.description = None
+        self.location = None
+        self.keywords = None
+        self.type = None
+        self.look_special = None
+        self.use_words = None
+
     def setup(self, config):
         # Takes in a dictionary and assigns item properties according to labels
         self.config = config
-
         self.label = config['label']
         # one word, serves as key in dictionary and shortest name
-
         self.name = config['name']
         # short descriptive phrase
-
         self.description = config['description']
         # full detailed descriptive text
-
         self.location = config['location']
         # string matching label of starting room
-
         self.keywords = config['keywords'] + config['use_words']
         # a list of synonyms and other words that would help identify it
         # the use words are added to keywords list, so use words are a
         # subset of keywords, which allows them to be searched at the
         # same time
-
         self.type = config['type']
         # possible values: "carryable", "exit", "scenery", "hidden"
-
         self.look_special = config['look_special']
         # change this flag to true to trigger special room-specific
         # events when the item is examined
-
         self.use_words = config['use_words']
 
 

@@ -12,19 +12,28 @@ class Mobile:
         # on start, matches the starting room so player stays in place
         self.victory = False
 
-    def move(self, exit):
+        self.item = None
+        self.exit = None
+        self.things_to_look_at = None
+
+    def move(self, _exit):
         """Called if the command starts with a movement keyword compares
             the content of the command to the keywords for each exit
             in the room.
         """
 
-        self.exit = exit
+        self.exit = _exit
         # check to see if the exit is valid/open
         if self.exit.label == 'not_found':
             print("You can't go that way.")
+
         elif self.exit.shall_pass(self):
-            print("You go through the %s to the %s.\n" % (
-            self.exit.name, self.exit.direction))
+            print(
+                "You go through the %s to the %s.\n" % (
+                    self.exit.name, self.exit.direction
+                )
+            )
+
             self.new_location = self.exit.destination
         else:
             print("You can't go that way.")
@@ -33,13 +42,14 @@ class Mobile:
         """Called if the player is trying to pick something
             in the room up.
         """
-
         self.item = item
 
         if self.item.label == "not_found":
             print("I don't see one of those to pick up.\n")
+
         elif self.item.type != "carryable":
             print("You can't pick that up.\n")
+
         else:
             print("You pick up the %s.\n" % self.item.name)
             self.inventory.add(self.item)
@@ -100,7 +110,8 @@ class Mobile:
         """
         self.item = item
 
-        if self.item.label == 'scalpel' or (self.location.label == 'garage' and self.item.label == 'key'):
+        if self.item.label == 'scalpel' or (
+                self.location.label == 'garage' and self.item.label == 'key'):
             self.cut()
 
         elif self.item.label == "syringe":
@@ -115,7 +126,8 @@ class Mobile:
         else:
             self.use_fail()
 
-    def use_fail(self):
+    @staticmethod
+    def use_fail():
         print("You don't see how to do that.")
 
     def cut(self):
@@ -144,9 +156,12 @@ class Mobile:
     def unlock_core(self):
         if not self.inventory.has('key'):
             print("You don't have anything that fits in the lock.")
+
         elif self.location.label != 'reactor' or (
-                "core" not in list(self.location.items.keys())):
+            "core" not in list(self.location.items.keys())
+        ):
             print("You don't see anything that key would unlock.")
+
         else:
             print(
                 "You put the key into the lock on top of the cylinder"
@@ -189,4 +204,5 @@ class Mobile:
 
         else:
             print(
-                "You really don't think that really needs that kind of power.")
+                "You really don't think that really needs that kind of power."
+            )

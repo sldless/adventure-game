@@ -72,12 +72,12 @@ def test_mobile():
     engine = setup()
     player = engine.player
     item = engine.map.all_items['scalpel']
-    exit = engine.map.all_exits['tube_to_hall']
+    _exit = engine.map.all_exits['tube_to_hall']
 
     player.take(item)
     assert_equal(len(player.inventory.inv_list), 1)
 
-    player.move(exit)
+    player.move(_exit)
     assert_equal(player.new_location, 'central_hallway_west')
 
     player.location = engine.map.all_rooms['kitchen']

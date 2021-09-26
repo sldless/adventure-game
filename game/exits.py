@@ -4,6 +4,15 @@ import csv
 
 class Exit(items.Item):
 
+    def __init__(self):
+        super().__init__()
+        self.player = None
+        self.config = None
+        self.abbreviations = None
+        self.is_open = None
+        self.direction = None
+        self.destination = None
+
     def exit_setup(self, config):
         self.config = config
         self.abbreviations = {
@@ -120,7 +129,7 @@ def create_config_reverse(config):
         and destination and reverses direction.
     """
 
-    config['label'] = config['label'] + "_rev"
+    config['label'] += "_rev"
 
     old_destination = config['destination']
     old_location = config['location']
@@ -154,7 +163,7 @@ def populate():
     Sample config dictionary (can be copied for each new item):
 
     .. code-block:: python
-        >>> config = {
+        >>> config_example = {
         ...   'label':'LABEL',
         ...   'name':'NAME',
         ...   'description':'DESCRIPTION',

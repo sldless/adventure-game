@@ -7,6 +7,8 @@ class Inventory:
 
     def __init__(self):
         self.inv_list = {}
+        self.item = None
+        self.label = None
 
     def add(self, item):
         self.item = item

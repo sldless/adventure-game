@@ -7,6 +7,15 @@ class Room:
     def __init__(self):
         self.visits = 0
 
+        self.config = None
+        self.label = None
+        self.verbose_description = None
+        self.terse_description = None
+        self.items = None
+        self.item_list = None
+        self.exit_list = None
+        self.exits = None
+
     def setup(self, config):
         self.config = config
 
@@ -20,8 +29,8 @@ class Room:
         for i, item in self.items.items():
             if item.type != 'hidden':
                 print("There is a %s here." % item.name)
-        for i, exit in self.exits.items():
-            print("There is a %s to the %s." % (exit.name, exit.direction))
+        for i, _exit in self.exits.items():
+            print("There is a %s to the %s." % (_exit.name, _exit.direction))
 
     def describe_verbose(self):
         """Prints the verbose room description."""
@@ -59,9 +68,9 @@ class Room:
     def add_exits(self, exit_list):
         self.exit_list = exit_list
         self.exits = {}
-        for key, exit in self.exit_list.items():
-            if exit.location == self.label:
-                self.exits[exit.label] = exit
+        for key, _exit in self.exit_list.items():
+            if _exit.location == self.label:
+                self.exits[_exit.label] = _exit
 
 
 def create_room(config):

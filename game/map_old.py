@@ -11,6 +11,13 @@ class MainPortal(Exit):
     # Then i can check for the existence of the move_special attribute,
     # then run it.
 
+    def __init__(self):
+        super().__init__()
+
+        self.inventory = None
+        self.item = None
+        self.room_items = None
+
     def move_special(self, inventory):
         self.inventory = inventory
         if (
@@ -44,6 +51,10 @@ class Inventory:
     def __init__(self):
         self.inventory = {}
         # this is the inventory dictionary
+        self.item = None
+        self.room_items = None
+        self.command = None
+        self.item_to_describe = None
 
     def pick_up(self, item, room_items):
         """adds an item to the inventory dictionary
@@ -101,6 +112,10 @@ class Kitchen(Room):
     dictionary of items after the action command to search the body is given.
     """
 
+    def __init__(self):
+        super().__init__()
+        self.item_label = None
+
     def look_special(self, item_label):
         self.item_label = item_label
         if self.item_label == "corpse":
@@ -117,6 +132,7 @@ class Map:
         then setup function runs each room creation function,
         which creates each room object as an attribute of the map object
     """
+
     def __init__(self, all_items, player):
         self.all_items = all_items
         self.player = player
@@ -125,22 +141,10 @@ class Map:
         self.all_rooms = {}
         # a dictionary that will pair room objects and their labels
 
-    def setup(self):
-        all_items = items.populate()
-        all_exits = exits.populate
-
-
-def debug_init():
-    """
-    Needed to automate this setup to poke around at internal variables
-    from the interpreter without starting the engine just saves me
-    some typing.
-    """
-    item_setup = ItemsInitializer()
-    all_items = item_setup.populator()
-    main_map = Map(all_items)
-    main_map.setup()
-    return main_map
+    @staticmethod
+    def setup():
+        items.populate()
+        exits.populate()
 
 
 def mentioned_in(command, items_to_search):
@@ -170,6 +174,8 @@ def mentioned_in(command, items_to_search):
     but i need to access the keyword list for each item
     """
     success = False
+    exit_to_try = None
+
     for i, item in items_to_search.items():
         for word in command:
             if word in item.keywords:
@@ -177,6 +183,7 @@ def mentioned_in(command, items_to_search):
                 success = True
     if success:
         return exit_to_try
+
     else:
         return "not_found"
 
