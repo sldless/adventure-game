@@ -261,4 +261,5 @@ class Engine:
             "| exit -> close game after confirmation     |"
             "| inv, inventory -> displaye backpack       |"
             "|                                           |"
+            "|________________Version 0.1________________|"
         )
