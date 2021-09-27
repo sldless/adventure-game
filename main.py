@@ -1,4 +1,4 @@
-from game import Inventory, Map, Mobile, Engine
+from Game import Inventory, Map, Mobile, Engine
 
 
 def get_engine():
