@@ -1,4 +1,3 @@
-import sys
 from os import system, name
 
 try:
@@ -15,9 +14,9 @@ build_exe_options = {"packages": ["os"], "excludes": ["tkinter"]}
 base = None
 
 setup(
-    name = "the_greate_escape",
-    version = "0.1",
-    description = "The Great Escape!",
-    options = {"build_exe": build_exe_options},
-    executables = [Executable("main.py", base=base)]
+    name="the_greate_escape",
+    version="0.1",
+    description="The Great Escape!",
+    options={"build_exe": build_exe_options},
+    executables=[Executable("main.py", base=base)]
 )
