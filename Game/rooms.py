@@ -1,5 +1,7 @@
 import csv
 
+from termcolor import colored
+
 
 class Room:
     """Organizes and manipulates rooms."""
@@ -27,18 +29,26 @@ class Room:
         # prints description of items and exits
         for i, item in self.items.items():
             if item.type != 'hidden':
-                print("There is a %s here." % item.name)
+                print(
+                    colored("There is a %s here." % item.name, 'cyan')
+                )
+
         for i, _exit in self.exits.items():
-            print("There is a %s to the %s." % (_exit.name, _exit.direction))
+            print(
+                colored(
+                    "There is a %s to the %s." % (_exit.name, _exit.direction),
+                    'cyan'
+                )
+            )
 
     def describe_verbose(self):
         """Prints the verbose room description."""
-        print("\n%s" % self.verbose_description)
+        print(colored("\n%s" % self.verbose_description, 'blue'))
         self.extra_description()
 
     def describe_terse(self):
         """prints the terse room description."""
-        print("\n%s" % self.terse_description)
+        print(colored("\n%s" % self.terse_description, 'blue'))
         self.extra_description()
 
     def describe(self):
