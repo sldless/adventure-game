@@ -1,3 +1,6 @@
+from termcolor import colored
+
+
 class Mobile:
     """A class for things that move around (currently just the player)
         tracks inventory and location (Room object)."""
@@ -25,18 +28,18 @@ class Mobile:
         self.exit = _exit
         # check to see if the exit is valid/open
         if self.exit.label == 'not_found':
-            print("You can't go that way.")
+            print(colored("You can't go that way.", 'red'))
 
         elif self.exit.shall_pass(self):
             print(
-                "You go through the %s to the %s.\n" % (
+                colored("You go through the %s to the %s.\n", 'cyan') % (
                     self.exit.name, self.exit.direction
                 )
             )
 
             self.new_location = self.exit.destination
         else:
-            print("You can't go that way.")
+            print(colored("You can't go that way.", 'red'))
 
     def take(self, item):
         """Called if the player is trying to pick something
@@ -45,13 +48,13 @@ class Mobile:
         self.item = item
 
         if self.item.label == "not_found":
-            print("I don't see one of those to pick up.\n")
+            print(colored("I don't see one of those to pick up.\n", 'yellow'))
 
         elif self.item.type != "carryable":
-            print("You can't pick that up.\n")
+            print(colored("You can't pick that up.\n", 'red'))
 
         else:
-            print("You pick up the %s.\n" % self.item.name)
+            print(colored("You pick up the %s.\n", 'green') % self.item.name)
             self.inventory.add(self.item)
             del self.location.items[self.item.label]
 
@@ -62,7 +65,7 @@ class Mobile:
 
         self.item = item
         if self.item.label == 'not_found':
-            print("You're not carrying one of those.\n")
+            print(colored("You're not carrying one of those.\n", 'yellow'))
         else:
             self.inventory.remove(self.item)
             self.location.items[self.item.label] = self.item
@@ -98,7 +101,8 @@ class Mobile:
         elif self.item.label == "fridge":
             self.location.items['syringe'].type = "carryable"
         else:
-            print("Look special failed.")  # shouldn't happen
+            # shouldn't happen
+            print(colored("Look special failed.", 'red'))
 
     def use(self, item):
         """Called if the parser thinks the player is trying to use an item.
@@ -128,17 +132,25 @@ class Mobile:
 
     @staticmethod
     def use_fail():
-        print("You don't see how to do that.")
+        print(colored("You don't see how to do that.", 'red'))
 
     def cut(self):
         if not self.inventory.has('scalpel'):
-            print("You don't have anything to cut that with.")
+            print(colored("You don't have anything to cut that with.", 'red'))
         elif not self.can_cut_key():
-            print("Cutting that doesn't seem like it would be a good idea.")
+            print(
+                colored(
+                    "Cutting that doesn't seem like it would be a good idea.",
+                    'yellow'
+                )
+            )
         else:
             print(
-                "You use the scalpel to cut the key free of the frozen, "
-                "swollen fingers. The flesh is stiff and bloodless."
+                colored(
+                    "You use the scalpel to cut the key free of the frozen, "
+                    "swollen fingers. The flesh is stiff and bloodless.",
+                    'green'
+                )
             )
 
             self.location.items['key'].type = "carryable"
@@ -155,17 +167,27 @@ class Mobile:
 
     def unlock_core(self):
         if not self.inventory.has('key'):
-            print("You don't have anything that fits in the lock.")
+            print(
+                colored(
+                    "You don't have anything that fits in the lock.",
+                    'red'
+                )
+            )
 
         elif self.location.label != 'reactor' or (
             "core" not in list(self.location.items.keys())
         ):
-            print("You don't see anything that key would unlock.")
+            print(
+                colored("You don't see anything that key would unlock.", 'red')
+            )
 
         else:
             print(
-                "You put the key into the lock on top of the cylinder"
-                " and twist. There's a hiss as the top angles open."
+                colored(
+                    "You put the key into the lock on top of the cylinder"
+                    " and twist. There's a hiss as the top angles open.",
+                    'green'
+                )
             )
 
             del self.location.items['core']
@@ -174,35 +196,48 @@ class Mobile:
 
     def inject(self):
         if not self.inventory.has('syringe'):
-            print("You don't have anything to inject.")
+            print(colored("You don't have anything to inject.", 'red'))
 
         else:
             print(
-                "It's clear what you have to do. "
-                "You grit your teeth and plunge the syringe into your chest."
-                " You probably can't really feel the spread of the liquid "
-                "burning through your arteries, but if feels like you can."
+                colored(
+                    "It's clear what you have to do. You "
+                    " grit your teeth and plunge the syringe into your chest."
+                    " You probably can't really feel the spread of the liquid "
+                    "burning through your arteries, but if feels like you can.",
+                    'blue'
+                )
             )
             self.injected = True
 
     def fix(self):
         if self.inventory.has('rod') and self.location.label == 'garage':
             print(
-                "You slide the core into the cylinder on the side of the "
-                "modified snowmobile. It slides into place snugly and "
-                "the snowmobile's electronics blink to life."
+                colored(
+                    "You slide the core into the cylinder on the side of the "
+                    "modified snowmobile. It slides into place snugly and "
+                    "the snowmobile's electronics blink to life.",
+                    'blue'
+                )
             )
             self.victory = True
 
         elif self.location.label == 'garage':
             print(
-                "The snowmobile is totally inert."
-                "  The gas tank and battery have both been removed, "
-                "and a strange cylindrical assembly mounted on the side."
-                " It will need some other power source."
+                colored(
+                    "The snowmobile is totally inert."
+                    "  The gas tank and battery have both been removed, "
+                    "and a strange cylindrical assembly mounted on the side."
+                    " It will need some other power source.",
+                    'blue'
+                )
             )
 
         else:
             print(
-                "You really don't think that really needs that kind of power."
+                colored(
+                    "You really don't think that really"
+                    " needs that kind of power.",
+                    'yellow'
+                )
             )

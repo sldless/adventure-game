@@ -1,3 +1,5 @@
+from termcolor import colored
+
 from . import exits
 from . import items
 from .exits import Exit
@@ -94,12 +96,15 @@ class Inventory:
             responds appropriately if inventory is empty.
         """
         if not self.inventory:
-            print("You are not carrying anything.")
+            print(colored("You are not carrying anything.", 'yellow'))
             return
 
         print(
-            "You are carrying:",
-            '\n'.join(item.name for item in self.inventory.values())
+            colored(
+                "You are carrying:" +
+                '\n'.join(item.name for item in self.inventory.values()),
+                'blue'
+            )
         )
 
 

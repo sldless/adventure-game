@@ -1,7 +1,7 @@
 from sys import exit
+from termcolor import colored
 
-
-HELP_LIST = (
+HELP_LIST = colored(
     "_____________________________________________\n"
     "|          The Great Escape - Info          |\n"
     "|                                           |\n"
@@ -11,7 +11,8 @@ HELP_LIST = (
     "| exit -> close game after confirmation     |\n"
     "| inv, inventory -> display backpack        |\n"
     "|                                           |\n"
-    "|________________Version 0.1________________|\n"
+    "|________________Version 0.1________________|\n",
+    'blue'
 )
 
 
@@ -23,7 +24,7 @@ VICTORY_MESSAGE = (
     "Congratulations! You are a winner!"
 )
 
-PARSE_FAIL_TEXT = "I'm afraid I don't know what that means."
+PARSE_FAIL_TEXT = colored("I'm afraid I don't know what that means.", 'red')
 
 
 class Engine:
@@ -71,21 +72,23 @@ class Engine:
         self.player.location = self.room
 
         print(
-            r" _______ _             _____                _   ",
-            r"|__   __| |           / ____|              | |  ",
-            r"   | |  | |__   ___  | |  __ _ __ ___  __ _| |_",
-            r"   | |  | '_ \ / _ \ | | |_ | '__/ _ \/ _` | __|",
-            r"   | |  | | | |  __/ | |__| | | |  __/ (_| | |_",
-            r"   |_|  |_|_|_|\___|  \_____|_|  \___|\__,_|\__|",
-            r"|  ____|",
-            r"| |__   ___  ___ __ _ _ __   ___ ",
-            r"|  __| / __|/ __/ _` | '_ \ / _ \ ",
-            r"| |____\__ \ (_| (_| | |_) |  __/",
-            r"|______|___/\___\__,_| .__/ \___| v0.1",
-            r"                     | |",
-            r"                     |_|",
-            r"                        by Loom4k",
-            sep='\n'
+            colored(
+                " _______ _             _____                _   \n"
+                "|__   __| |           / ____|              | |  \n"
+                "   | |  | |__   ___  | |  __ _ __ ___  __ _| |_\n"
+                "   | |  | '_ \\ / _ \\ | | |_ | '__/ _ \\/ _` | __|\n"
+                "   | |  | | | |  __/ | |__| | | |  __/ (_| | |_\n"
+                "   |_|  |_|_|_|\\___|  \\_____|_|  \\___|\\__,_|\\__|\n"
+                "|  ____|\n"
+                "| |__   ___  ___ __ _ _ __   ___ \n"
+                "|  __| / __|/ __/ _` | '_ \\ / _ \\ \n"
+                "| |____\\__ \\ (_| (_| | |_) |  __/\n"
+                "|______|___/\\___\\__,_| .__/ \\___| v0.1\n"
+                "                     | |\n"
+                "                     |_|\n"
+                "                        by Loom4k\n",
+                'blue'
+            ),
         )
         self.room.describe()
         return self
@@ -93,8 +96,8 @@ class Engine:
     @staticmethod
     def prompt():
         """Prints the prompt and returns the input."""
-        print("\nWhat do you want to do?")
-        return input("> ")
+        print(colored("\nWhat do you want to do?", 'magenta'))
+        return input(colored("> ", "green"))
 
     def menu_commands(self, command):
         """handles straightforward,
@@ -145,14 +148,15 @@ class Engine:
 
             self.player.drop(self.item_to_try)
         else:
-            print("Inventory parsing error")  # should never happen
+            # should never happen
+            print(colored("Inventory parsing error", "red"))
 
     def look_fail(self, command):
         """Called when a look command doesn't refer to anything
             could be made more interesting by referring to the command.
         """
         self.command = command
-        print("You don't see anything like that.")
+        print(colored("You don't see anything like that.", "yellow"))
 
     def parse(self, action):
         """Breaks commands into categories
@@ -207,9 +211,11 @@ class Engine:
             )
 
             if self.looked_at.label != 'not_found':
-                print(self.looked_at.description)
+                print(colored(self.looked_at.description, "blue"))
             else:
-                print("You don't see anything like that here.")
+                print(
+                    colored("You don't see anything like that here.", 'red')
+                )
 
             if self.looked_at.look_special == 'yes':
                 self.player.look_special(self.looked_at)
@@ -231,7 +237,7 @@ class Engine:
         self.use_item = self.mentioned_in(self.command, self.player.can_see())
 
         if self.use_item.label == "not_found":
-            print("You don't see any way to do that.")
+            print(colored("You don't see any way to do that.", "red"))
         else:
             self.player.use(self.use_item)
 
