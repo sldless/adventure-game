@@ -40,7 +40,7 @@ class Exit(items.Item):
         self.direction = config['direction']
         self.destination = config['destination']
 
-        self.keywords.extend([self.direction, self.abbreviations[self.direction])
+        self.keywords.extend([self.direction, self.abbreviations[self.direction]])
         # sets up the exit-specific properties
 
     def shall_pass(self, player):

@@ -1,7 +1,6 @@
 from nose.tools import assert_equal
 import Game
 
-
 def setup():
     test_inv = Game.inventory.Inventory()
     test_map = Game.map.Map()
