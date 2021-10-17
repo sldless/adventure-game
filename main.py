@@ -18,5 +18,5 @@ def main():
     main_engine.victory()
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == '__main__': 
+    main() #Runs the main function code
